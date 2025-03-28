@@ -1,0 +1,23 @@
+{% extends 'publications/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <form class="row" method="post" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-header">
+                        <b>Создание поста</b>
+                    </div>
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-bottom: 2px;">Опубликовать</button>
+                    <a href="{% url 'publications:home' %}" class="mt-2">Назад к списку публикаций</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

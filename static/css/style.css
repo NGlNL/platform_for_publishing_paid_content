@@ -1,0 +1,38 @@
+.center-items {
+            text-align: center;
+        }
+.sidebar {
+    height: 100vh;
+    background-color: #1a1d20;
+    color: #fff;
+    padding: 20px;
+    z-index: 1000;
+    position: fixed;
+}
+.sidebar a {
+    color: #fff;
+}
+.menu-title {
+    border-bottom: 1px solid #5c636a;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.dropdown-menu {
+    background-color: black;
+    color: white;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: gray;
+}
+.card {
+    margin: 30px;
+    height: auto;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}

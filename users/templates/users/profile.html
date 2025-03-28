@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design Registration Form</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            box-sizing: border-box;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-center a {
+            color: #6200ea;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        .visually-hidden {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .d-flex:hover .visually-hidden {
+          opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+    {% if request.user == user %}
+        <a href="{% url 'users:profile_update' user.id %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+            </svg>
+        </a>
+    {% endif %}
+        <h2>Профиль</h2>
+        <form href="{% url 'users:profile' user.id %}">
+        {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="card mb-4">
+                  <div class="card-body text-center">
+                    <img {% if user.avatar %} src="{{ user.avatar.url }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;"{% else %} src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;" {% endif %}>
+                    <h5 class="my-3">{% if user.tg_nick == None %}Телеграм не указан{% else %}{{ user.tg_nick }}{% endif %}</h5>
+                    <p class="text-muted mb-1">{{ user.phone }}</p>
+                    <p class="text-muted mb-4">{{ user.email }}</p>
+                    <p class="text-muted mb-4">Количество записей: {{ posts.count }}</p>
+                    {% if user.is_subscribed == True %}
+                        <div class="d-flex align-items-center">
+                            <p class="text-muted mb-4" style="color: #2ecc71;">БлогПост +</p>
+                            <div class="visually-hidden" style="margin-top: -10px">
+                                Спасибо за подписку! Мы будем рады видеть вас в нашем сообществе!
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a type="button" class="btn btn-primary" href="{% url 'publications:home' %}">Назад на главную</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% extends 'publications/base.html' %}
+
+{% block content %}
+<main class="container">
+  <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="col-lg-6 px-0">
+      <h1 class="display-4 fst-italic">Вам есть о чём рассказать, делитесь, общайтесь, узнавайте!</h1>
+      {% if user.is_authenticated %}
+        <p class="lead mb-0">
+            <a href="{% url 'publications:post_create' %}" class="text-body-emphasis fw-bold">Написать пост -></a>
+        </p>
+      {% else %}
+        <p class="lead mb-0">
+            <a href="{% url 'users:login' %}" class="text-body-emphasis fw-bold">Войдите, чтобы написать пост -></a>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">{{ most_viewed_post.name }}</strong>
+          <h3 class="mb-0">Рекомеднуемый пост</h3>
+          <div class="mb-1 text-body-secondary">{{ most_viewed_post.date_posted }}</div>
+          <p class="card-text mb-auto">{{ most_viewed_post.content }}</p>
+          <p class="card-text mb-auto">Просмотры: {{ most_viewed_post.views_count }}</p>
+          <a href="{% url 'publications:post_detail' most_viewed_post.id %}" class="icon-link gap-1 icon-link-hover stretched-link">
+            Читать дальше
+          </a>
+        </div>
+        {% if most_viewed_post.image %}
+          <img src="{{ most_viewed_post.image.url }}">
+        {% else %}
+          <div class="col-auto d-none d-lg-block">
+          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Пост без фото</text></svg>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+      <article class="blog-post">
+        <h2 class="display-5 link-body-emphasis mb-1">Популярные публикации</h2>
+        <form method="GET" action="{% url 'publications:home' %}">
+            <label for="order">Направление сортировки всех публикаций:</label>
+            <select name="order">
+                <option value="desc">По убыванию</option>
+                <option value="asc">По возрастанию</option>
+            </select>
+            <input type="submit" value="Применить фильтр">
+        </form>
+        {% for post in posts %}
+            <a class="btn btn-lg" role="button" data-bs-toggle="button" href="{% url 'publications:post_detail' post.id %}">
+                <strong>
+                    {{ post.name }}
+                </strong>
+            </a>
+            <p class="blog-post-meta">{{ post.date_posted }}</p>
+            <span style="opacity: 0.5;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+            </svg> {{ post.views_count }}
+            </span>
+            {% if post.title == None %}
+                <p class="blog-post-meta">Без категории</p>
+            {% else %}
+                <p class="blog-post-meta">{{ post.title }}</p>
+            {% endif %}
+            Автор публикации:
+            <a href="{% url 'users:profile' post.owner.id %}">{{ post.owner }}</a>
+            <hr>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid rounded-start" width="200" height="200">
+            {% endif %}
+                <p>{{ post.content }}</p>
+                <hr>
+        {% empty %}
+            <b>Здесь пока ничего нет... Оформите подписку на публикации и будьте в курсе новых постов!</b>
+        {% endfor %}
+      </article>
+        <div class="p-4">
+          <h4 class="fst-italic">Следите за нами!</h4>
+          <ol class="list-unstyled">
+            <li><a href="https://github.com/NGlNL?tab=repositories">GitHub</a></li>
+          </ol>
+        </div>
+      </div>
+</main>
+
+<footer class="py-5 text-center text-body-secondary bg-body-tertiary">
+  <p class="mb-0">
+    <a href="#">Подняться вверх</a>
+  </p>
+</footer>
+{% endblock %}
