@@ -31,9 +31,8 @@ class UserRegisterForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if email and not email.endswith("@example.com"):
-            raise forms.ValidationError("Email должен быть с доменом @example.com.")
-        return email
+        if '@' not in email:
+            raise forms.ValidationError("Email должен содержать символ '@'.")
 
 
 class PasswordResetForm(StyleFormMixin, forms.Form):
