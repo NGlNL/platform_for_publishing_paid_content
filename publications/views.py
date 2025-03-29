@@ -1,19 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import (
-    Http404,
-    HttpResponseForbidden,
-    HttpResponseNotFound,
-    HttpResponseRedirect,
-)
+from django.http import (Http404, HttpResponseForbidden, HttpResponseNotFound,
+                         HttpResponseRedirect)
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 from rest_framework import viewsets
 from rest_framework.reverse import reverse
 
@@ -32,6 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 def home(request):
+    """View для главной страницы"""
     title_filter = request.GET.get("title")
     order = request.GET.get("order")
     most_viewed_post = Post.get_most_viewed()
@@ -123,6 +115,7 @@ class PostDetailView(
     context_object_name = "post"
 
     def get(self, request, *args, **kwargs):
+        """Метод для увеличения количества просмотров сообщения."""
         response = super().get(request, *args, **kwargs)
         self.object.views_count += 1
         self.object.save()
@@ -130,6 +123,8 @@ class PostDetailView(
 
 
 class PostListView(ListView):
+    """'Представление для списка сообщений."""
+
     model = Post
     template_name = "publications/post_list.html"
     context_object_name = "posts"

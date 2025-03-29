@@ -8,6 +8,8 @@ from users.models import User
 
 
 class UserRegisterForm(UserCreationForm):
+    """Форма регистрации пользователя"""
+
     phone = forms.CharField(max_length=35)
     email = forms.EmailField()
     password1 = forms.CharField(label="password1", widget=forms.PasswordInput)
@@ -18,11 +20,10 @@ class UserRegisterForm(UserCreationForm):
         fields = ("phone", "email", "password1", "password2")
 
     def clean_phone(self):
+        """Валидация номера телефона."""
         phone = self.cleaned_data.get("phone")
-        # Проверка на наличие только цифр
         if phone and not phone.isdigit():
             raise forms.ValidationError("Номер телефона должен содержать только цифры.")
-        # Проверка на длину номера телефона
         if phone and len(phone) != 11:
             raise forms.ValidationError("Номер телефона должен содержать 11 цифр.")
         if phone and phone[0] != "8":
@@ -30,16 +31,21 @@ class UserRegisterForm(UserCreationForm):
         return phone
 
     def clean_email(self):
+        """Валидация почты."""
         email = self.cleaned_data.get("email")
-        if '@' not in email:
+        if "@" not in email:
             raise forms.ValidationError("Email должен содержать символ '@'.")
+        return email
 
 
 class PasswordResetForm(StyleFormMixin, forms.Form):
+    """Форма для сброса пароля"""
+
     phone = forms.CharField(max_length=35)
     email = forms.EmailField()
 
     def clean_phone(self):
+        """Валидация номера телефона."""
         phone = self.cleaned_data.get("phone")
         if not phone.isdigit():
             raise forms.ValidationError("Номер телефона должен содержать только цифры.")
@@ -47,10 +53,13 @@ class PasswordResetForm(StyleFormMixin, forms.Form):
 
 
 class LoginForm(forms.Form):
+    """Форма авторизации"""
+
     phone = forms.CharField(max_length=35)
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
+        """Валидация формы"""
         cleaned_data = super().clean()
         phone = cleaned_data.get("phone")
         password = cleaned_data.get("password")
@@ -66,6 +75,8 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(StyleFormMixin, ModelForm):
+    """Форма профиля пользователя"""
+
     class Meta:
         model = User
         fields = ("avatar", "tg_nick", "email", "phone")

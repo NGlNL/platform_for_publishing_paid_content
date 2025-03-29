@@ -2,15 +2,9 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from publications.apps import PublicationsConfig
-from publications.views import (
-    PostCreateView,
-    PostDeleteView,
-    PostDetailView,
-    PostListView,
-    PostUpdateView,
-    PostViewSet,
-    home,
-)
+from publications.views import (PostCreateView, PostDeleteView, PostDetailView,
+                                PostListView, PostUpdateView, PostViewSet,
+                                home)
 
 app_name = PublicationsConfig.name
 

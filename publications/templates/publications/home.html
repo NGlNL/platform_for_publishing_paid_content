@@ -51,7 +51,8 @@
                 <option value="desc">По убыванию</option>
                 <option value="asc">По возрастанию</option>
             </select>
-            <input type="submit" value="Применить фильтр">
+            <input type="submit" class="btn btn-secondary" value="Применить фильтр">
+            <a type="button" class="btn btn-success" href="{% url 'publications:post_list' %}">Все публикации</a>
         </form>
         {% for post in posts %}
             <a class="btn btn-lg" role="button" data-bs-toggle="button" href="{% url 'publications:post_detail' post.id %}">

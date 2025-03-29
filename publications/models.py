@@ -20,6 +20,8 @@ TITLE_CHOICES = (
 
 
 class Post(models.Model):
+    """Модель постов."""
+
     name = models.CharField(max_length=100, verbose_name="Заголовок записи")
     content = models.TextField(verbose_name="Текст записи")
     image = models.ImageField(
@@ -48,4 +50,5 @@ class Post(models.Model):
 
     @classmethod
     def get_most_viewed(cls):
+        """Возвращает пост с наибольшим числом просмотров."""
         return cls.objects.order_by("-views_count").first()

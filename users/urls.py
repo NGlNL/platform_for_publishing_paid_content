@@ -1,21 +1,14 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
 from users.apps import UsersConfig
 from users.services import StripeSessionView
-from users.views import (
-    PasswordResetConfirmView,
-    PasswordResetView,
-    SubscribeView,
-    SuccessView,
-    UserCreateAPIView,
-    UserCreateView,
-    UserDetailView,
-    UserUpdateView,
-    confirm_code,
-    login_view,
-)
+from users.views import (PasswordResetConfirmView, PasswordResetView,
+                         SubscribeView, SuccessView, UserCreateAPIView,
+                         UserCreateView, UserDetailView, UserUpdateView,
+                         confirm_code, login_view)
 
 app_name = UsersConfig.name
 

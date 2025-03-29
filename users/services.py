@@ -7,6 +7,8 @@ stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 
 class StripeSessionView(View):
+    """Stripe сессия"""
+
     def post(self, request):
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],

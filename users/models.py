@@ -4,6 +4,8 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
+    """Класс менеджера пользователей"""
+
     def create_user(self, phone, email, password, **extra_fields):
         if not phone:
             raise ValueError("Укажите телефон")

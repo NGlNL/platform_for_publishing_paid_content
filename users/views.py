@@ -10,13 +10,15 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
+from django.views.generic import (CreateView, DetailView, TemplateView,
+                                  UpdateView)
 from rest_framework.generics import CreateAPIView, get_object_or_404
 
 from config import settings
 from config.settings import EMAIL_HOST_USER
 from publications.models import Post
-from users.forms import LoginForm, PasswordResetForm, ProfileForm, UserRegisterForm
+from users.forms import (LoginForm, PasswordResetForm, ProfileForm,
+                         UserRegisterForm)
 from users.models import User
 from users.serializers import UserSerializer
 
@@ -255,6 +257,12 @@ class SuccessView(TemplateView):
     template_name = "users/success.html"
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         user = self.request.user
-        user.is_subscribed = True
-        user.save()
+        if user.is_authenticated:
+            user.is_subscribed = True
+            user.save()
+            context['message'] = "Подписка успешно оформлена!"
+        else:
+            return redirect('login')
+        return context

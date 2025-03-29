@@ -3,10 +3,7 @@ version: '3.9'
 services:
   web:
     build: .
-    command: sh -c "python manage.py makemigrations &&
-             python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
-             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/app
       - static_volume:/app/staticfiles
@@ -33,18 +30,15 @@ services:
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env
     expose:
       - "5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+    env_file:
+      - ./.env
 
   redis:
     image: redis:7
+    volumes:
+      - redis_volume:/data
     expose:
       - "6379"
     env_file:

@@ -9,13 +9,10 @@ from users.models import User
 class PostViewSetTests(APITestCase):
 
     def setUp(self):
-        # Создаем пользователя для тестирования
         self.user = User.objects.create_user(
             email="testuser@example.com", phone="81234567890", password="testpass"
         )
         self.client.login(phone="81234567890", password="testpass")
-
-        # Создаем несколько постов для тестирования
         self.post1 = Post.objects.create(
             title="Мир", content="Content of the first post", owner=self.user
         )
@@ -31,42 +28,30 @@ class PostViewSetTests(APITestCase):
 
     def test_create_post(self):
         """Тест создания нового поста."""
-        self.client.login(
-            phone="81234567890", password="testpass"
-        )  # Аутентификация пользователя
+        self.client.login(phone="81234567890", password="testpass")
         data = {
             "name": "Новый пост",
             "title": "мир",
             "content": "Содержимое нового поста",
         }
-        response = self.client.post(
-            reverse("publications:post_create"), data
-        )  # Используем метод POST
+        response = self.client.post(reverse("publications:post_create"), data)
 
-        self.assertEqual(
-            response.status_code, 302
-        )  # Проверяем, что произошло перенаправление
-        self.assertEqual(Post.objects.count(), 3)  # Проверяем, что пост был создан
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Post.objects.count(), 3)
         self.assertTrue(Post.objects.filter(title="мир").exists())
 
     def test_update_post(self):
         """Тест обновления существующего поста."""
         self.client.force_authenticate(user=self.user)
-        url = reverse(
-            "publications:post_update", kwargs={"pk": self.post1.id}
-        )  # Получаем URL для обновления поста
+        url = reverse("publications:post_update", kwargs={"pk": self.post1.id})
         data = {
             "name": "Новое имя",
             "title": "технология",
             "content": "Updated content of the first post",
         }
-
-        response = self.client.post(url, data)  # Используйте POST для отправки данных
-        self.assertEqual(
-            response.status_code, status.HTTP_302_FOUND
-        )  # Проверяем, что редирект произошел
-
-        self.post1.refresh_from_db()  # Обновляем объект из базы данных
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.post1.refresh_from_db()
         self.assertEqual(self.post1.title, "технология")
 
     def test_delete_post(self):
@@ -86,8 +71,6 @@ class HomeViewTests(APITestCase):
             email="testuser@example.com", phone="1234567890", password="testpass"
         )
         self.client.login(phone="1234567890", password="testpass")
-
-        # Создаем посты для тестирования
         self.post1 = Post.objects.create(
             name="Пост о мире", content="Контент о мире", owner=self.user, title="мир"
         )

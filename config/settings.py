@@ -40,7 +40,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://158.160.130.134',
+    "http://158.160.130.134",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -144,10 +144,10 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
-if 'test' in sys.argv:
+if "test" in sys.argv:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / 'test_db.sqlite3',
+            "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
