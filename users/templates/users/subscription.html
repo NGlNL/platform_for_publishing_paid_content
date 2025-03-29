@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подписка</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #3700b3;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            box-sizing: border-box;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-center a {
+            color: #6200ea;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        {% if user.is_subscribed %}
+            <h2>Вы уже подписаны на БлогПост!</h2>
+            <a href="{% url 'publications:home' %}" style="margin-left: 130px">На главную</a>
+        {% else %}
+            <h2>Подписка на БлогПост</h2>
+            <h4>Станьте подписчиком на наш БлогПост и получайте доступ к интересным материалам и новостям!</h4>
+            {% if user.is_authenticated %}
+               <button type="submit" class="btn-submit subscribe-button">Подписаться</button>
+            {% else %}
+                <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
+            {% endif %}
+            <a href="{% url 'publications:home' %}" style="margin-left: 200px">На главную</a>
+            <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+        {% endif %}
+    </div>
+</body>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    console.log('Stripe script started');
+    console.log('Found subscribe buttons:', document.querySelectorAll('.subscribe-button'));
+
+    function handleSubscribeButtons() {
+        var stripe = Stripe('{{ stripe_public_key }}');
+
+        document.querySelectorAll('.subscribe-button').forEach(button => {
+            button.addEventListener('click', async function() {
+                console.log('Button clicked!');
+                const csrfToken = document.getElementById('csrfToken').value;
+
+                const response = await fetch(`/users/create_stripe_session/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify({
+
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const session = data.session_id;
+                    const result = await stripe.redirectToCheckout({
+                        sessionId: session,
+                    });
+
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                } else {
+                    alert('Произошла ошибка: ' + data.error);
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', handleSubscribeButtons);
+    document.addEventListener('load', handleSubscribeButtons);
+</script>
+</html>

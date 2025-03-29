@@ -1,0 +1,15 @@
+Django==5.1.7
+djangorestframework==3.15.2
+psycopg2-binary==2.9.10
+python-dotenv==1.0.1
+pillow==11.1.0
+djangorestframework_simplejwt==5.5.0
+stripe==11.6.0
+celery==5.4.0
+redis==5.2.1
+eventlet==0.39.1
+drf-yasg==1.21.10
+django-filter==25.1
+gunicorn
+django-redis
+flake8==7.1.2

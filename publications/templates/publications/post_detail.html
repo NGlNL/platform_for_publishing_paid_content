@@ -1,0 +1,30 @@
+{% extends 'publications/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">{{ post.name }}</h1>
+  <div class="row mt-5">
+    <div class="card shadow-sm">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" width="300" height="300">
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      {% if post.title == None %}
+          <p class="blog-post-meta">Без категории</p>
+      {% else %}
+          <p class="blog-post-meta">{{ post.title }}</p>
+      {% endif %}
+      <p>Содержание: {{ post.content }}</p>
+      <p>Дата публикации: {{ post.date_posted|date:"Y-m-d H:m" }}</p>
+      <p>Автор: <a href="{% url 'users:profile' post.owner.id %}">{{ post.owner }}</a></p>
+      <p>Просмотры: {{ post.views_count }}</p>
+      <a href="{% url 'publications:home' %}" class="btn btn-primary mt-3">Назад на главную</a>
+      {% if user == post.owner %}
+          <a href="{% url 'publications:post_update' post.id %}" class="btn btn-secondary mt-3" style="margin-left: 20px;">Редактировать</a>
+          <a href="{% url 'publications:post_delete' post.id %}" class="btn btn-danger mt-3" style="margin-left: 20px;">Удалить</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
