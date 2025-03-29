@@ -12,3 +12,4 @@ drf-yasg==1.21.10
 django-filter==25.1
 gunicorn
 django-redis
+flake8==7.1.2
