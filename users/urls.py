@@ -8,7 +8,7 @@ from users.services import StripeSessionView
 from users.views import (PasswordResetConfirmView, PasswordResetView,
                          SubscribeView, SuccessView, UserCreateAPIView,
                          UserCreateView, UserDetailView, UserUpdateView,
-                         confirm_code, login_view)
+                         confirm_code, login_view, cancel_payment)
 
 app_name = UsersConfig.name
 
@@ -43,4 +43,5 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="reset_password_confirm",
     ),
+    path("cancel/", cancel_payment, name="cancel"),
 ]

@@ -266,3 +266,8 @@ class SuccessView(TemplateView):
         else:
             return redirect('users:login')
         return context
+
+
+def cancel_payment(request):
+    """Отмена оплаты подписки"""
+    return render(request, 'cancel.html')
