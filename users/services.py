@@ -25,7 +25,7 @@ class StripeSessionView(View):
                 },
             ],
             mode="payment",
-            success_url="http://127.0.0.1:8000/users/success/",
-            cancel_url="http://127.0.0.1:8000/",
+            success_url="users:success",
+            cancel_url="users/cancel.html",
         )
         return JsonResponse({"session_id": session.id})
