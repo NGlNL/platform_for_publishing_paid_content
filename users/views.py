@@ -264,5 +264,5 @@ class SuccessView(TemplateView):
             user.save()
             context['message'] = "Подписка успешно оформлена!"
         else:
-            return redirect('login')
+            return redirect('users:login')
         return context
